@@ -20,15 +20,24 @@ loadBtn.addEventListener("click", (evt) => {
     loading.classList.add('text-center_visible');
 
     fetch(`https://api.github.com/users/${searchValue}`)
-    .then((res) => res.json())
-    .then((data) =>
-        (resultsContainer.innerHTML = `<div class="response-container">
+      .then(async (res) => {
+        if (!res.ok) {
+          (resultsContainer.innerHTML = `<div class="response-container">
+                  <p> Такого пользователя не существует <p>
+              </div>`);
+          throw new Error('Такого пользователя не существует');
+        }
+
+        return res.json();
+      })
+      .then((data) =>
+      (resultsContainer.innerHTML = `<div class="response-container">
                   <img src="${data.avatar_url}">
                   <p> Имя: <span>${data.name}</span><p>
                   <p> О себе: <span>${data.bio}</span><p>
                   <p> Кол-во репозиториев: <span>${data.public_repos}</span><p>
-              </div>`)
-    )
+              </div>`))
+      .catch((error) => console.log(error.message));
 
     loading.classList.remove('text-center_visible');
 
@@ -36,7 +45,7 @@ loadBtn.addEventListener("click", (evt) => {
     if (error.name === "SyntaxError") {
       inputGhError.textContent = "заполните поле";
     } else {
-      console.log(error.message)
+      console.log(error)
     }
 
   }
@@ -63,26 +72,6 @@ postsBtn.addEventListener('click', async (evt) => {
     error => console.log(error)
   };
 
-  // loading.classList.add('text-center_visible');
-
-  // axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
-  //   resultsContainer.innerHTML = "";
-  //   response.data.forEach(el => {
-  //     resultsContainer.innerHTML += `<div class="response-container">
-  //               <p> Имя: <span>${el.name}</span><p>
-  //               <p> Никнейм: <span>${el.username}</span><p>
-  //               <p> Город: <span>${el.address.city}</span><p>
-  //               <p> Телефон: <span>${el.phone}</span><p>
-  //               <p> Наименование компании: <span>${el.company.name}</span><p>
-  //           </div>`
-
-  //   });
-
-  // })
-  // .catch(error => console.log(error));
-
-  // loading.classList.remove('text-center_visible');
-
 });
 
 numberInput.addEventListener('input', (evt) => {
@@ -90,7 +79,7 @@ numberInput.addEventListener('input', (evt) => {
   inputNumberError.textContent = "";
 
   try {
-   if (evt.target.value === "") {
+    if (evt.target.value === "") {
       throw new SyntaxError('заполните поле');
     } else if (evt.target.value < 5 || evt.target.value > 10) {
       throw new SyntaxError('значение меньше 5 или больше 10');
