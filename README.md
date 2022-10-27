@@ -18,7 +18,7 @@
 
 **GitHubPages**
 
-* [Ссылка на страницу]
+* [Ссылка на страницу](https://xatepk.github.io/ajax-homework/)
 
 **Планы**
 

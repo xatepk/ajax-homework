@@ -29,7 +29,7 @@ loadBtn.addEventListener("click", (evt) => {
                   <p> Кол-во репозиториев: <span>${data.public_repos}</span><p>
               </div>`)
     )
-    
+
     loading.classList.remove('text-center_visible');
 
   } catch (error) {
